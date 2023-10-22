@@ -1,32 +1,67 @@
-# from aiogram import Bot, Dispatcher, types, executor
-# from config import token
 
-# bot = Bot(token=token)
-# dp = Dispatcher(bot)
+from bs4 import BeautifulSoup
+import requests
 
-# @dp.message_handler(commands='start')
-# async def start(message:types.Message):
-#     await message.answer("Привет")
+def parsing_akipress():
+    url = 'https://akipress.org'
 
-# @dp.message_handler(commands='help')
-# async def get_help(message:types.Message):
-#     await message.answer("Вам нужна помощь?")
+    response = requests.get(url=url)
+    print(response)
+    soup = BeautifulSoup(response.text, 'lxml')
+    # print(soup)
+    all_news = soup.find_all('a', class_='newslink')
+    # print(all_news)
+    n = 0
+    for news in all_news:
+        n += 1
+        print(f'{n}) {news.text}')
+        with open('news.txt', 'a+', encoding='utf-8') as news_file:
+            news_file.write(f'{n}) {news.text}\n')
+    """Сделайте так чтобы у каждой новости была нумерация и также запишите
+    их в txt файл (news.txt)"""
 
-# @dp.message_handler(text='Привет')
-# async def hello(message:types.Message):
-#     await message.answer("Пр")
+def parsing_sulpak_smartfoniy():
+    url = 'https://www.sulpak.kg/f/smartfoniy/osh/'
 
-# @dp.message_handler(commands='test')
-# async def test_bot(message:types.Message):
-#     await message.answer("Тест бота")
-#     await message.reply("Ответ на сообщение")
-#     await message.answer_photo
-#     ("https://static.tildacdn.com/tild3863-3635-4138-b133-613431396662/230124-237_2.jpg")
-#     await message.answer_location(40.51931772662277, 72.80301182274856)
-#     await message.answer_dice()
+    response = requests.get(url=url)
+    soup = BeautifulSoup(response.text, 'lxml')
+    all_phones = soup.find_all('div', class_="product__item-name")
+    # print(all_phones)
+    for phone in all_phones:
+        print(phone.text)
+parsing_sulpak_smartfoniy()
 
-# @dp.message_handler()
-# async def not_found(message:types.Message):
-#     await message.reply("Я вас не понял, введите /help")
+from bs4 import BeautifulSoup
+import requests
 
-# executor.start_polling(dp)
+def parsing_akipress():
+    url = 'https://akipress.org'
+
+    response = requests.get(url=url)
+    print(response)
+    soup = BeautifulSoup(response.text, 'lxml')
+    # print(soup)
+    all_news = soup.find_all('a', class_='newslink')
+    # print(all_news)
+    n = 0
+    for news in all_news:
+        n += 1
+        print(f'{n}) {news.text}')
+        with open('news.txt', 'a+', encoding='utf-8') as news_file:
+            news_file.write(f'{n}) {news.text}\n')
+    """Сделайте так чтобы у каждой новости была нумерация и также запишите
+    их в txt файл (news.txt)"""
+
+def parsing_sulpak_smartfoniy():
+    n = 0
+    for i in range(1, 11):
+        url = f'https://www.sulpak.kg/f/smartfoniy/osh/?page={i}'
+
+        response = requests.get(url=url)
+        soup = BeautifulSoup(response.text, 'lxml')
+        all_phones = soup.find_all('div', class_="product__item-name")
+        # print(all_phones)
+        for phone in all_phones:
+            n += 1
+            print(f'{n}) {phone.text}')
+parsing_sulpak_smartfoniy()
