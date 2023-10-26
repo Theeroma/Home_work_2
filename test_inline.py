@@ -40,5 +40,9 @@ async def testing(message:types.Message):
 @dp.callback_query_handler(lambda call: call.data == "about_us")
 async def about_us(message:types.Message):
     await bot.send_message(message.from_user.id, "Geeks - это курсы программирования в Бишкеке, Кара-Балте и в Оше")
+
+@dp.callback_query_handler(lambda call: call.data == "contact")
+async def contact(message:types.Message):
+    await bot.send_message(message.from_user.id, "Наши контакты\nАдрес: Аматова 1Б\nНомер: 0771343210")
  
 executor.start_polling(dp, skip_updates=True)
